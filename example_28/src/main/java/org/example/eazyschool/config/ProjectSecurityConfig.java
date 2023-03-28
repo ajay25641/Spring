@@ -9,7 +9,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests()
+        http
+                .csrf().disable()
+                .authorizeHttpRequests()
                 .requestMatchers("/home").permitAll()
                 .requestMatchers("/contact").permitAll()
                 .requestMatchers("/courses").permitAll()
