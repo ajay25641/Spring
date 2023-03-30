@@ -25,6 +25,7 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/assets/**").permitAll()
                 .requestMatchers("/saveMsg").permitAll()
+                .requestMatchers("/logout").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
