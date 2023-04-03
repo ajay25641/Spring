@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class GlobalExceptionController {
-    @ExceptionHandler(Exception.class)
+   @ExceptionHandler(Exception.class)
     public ModelAndView exceptionHandler(Exception e){
         ModelAndView errorPage=new ModelAndView();
         errorPage.setViewName("error");

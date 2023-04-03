@@ -19,6 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
@@ -59,6 +62,14 @@ public class ContactController {
           }
           contactService.saveContactDetails(contact);
           return "redirect:contact"; // reload contact form from start
+
+      }
+      @RequestMapping(value="/displayMessages",method = GET)
+      public ModelAndView displayMessagesWithOpenStatus(){
+          List<Contact> contactMsgs=contactService.getContactMessagesWithOpenStatus();
+          ModelAndView modelAndView=new ModelAndView("messages.html");
+          modelAndView.addObject("contactMsgs",contactMsgs);
+          return modelAndView;
 
       }
     }

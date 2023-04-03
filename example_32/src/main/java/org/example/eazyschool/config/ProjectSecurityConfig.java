@@ -21,6 +21,7 @@ public class ProjectSecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/displayMessages").permitAll()
                 .requestMatchers("/home").permitAll()
                 .requestMatchers("/contact").permitAll()
                 .requestMatchers("/courses").permitAll()

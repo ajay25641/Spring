@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ContactRepository {
 
@@ -22,5 +24,11 @@ public class ContactRepository {
         return this.jdbcTemplate.update(sql,contact.getName(),contact.getMobileNum(),contact.getEmail(),
                                             contact.getSubject(),contact.getMessage(),contact.getStatus(),
                                             contact.getCreatedAt(),contact.getCreatedBy());
+    }
+
+    public List<Contact> getContactMessagesWithStatus(String status) {
+        String getMessagesQuery="SELECT * FROM CONTACT_MSG WHERE status=?;";
+        List<Contact>contactMsgs=this.jdbcTemplate.queryForList(getMessagesQuery,Contact.class,status);
+        return contactMsgs;
     }
 }
