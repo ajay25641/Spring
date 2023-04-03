@@ -1,5 +1,6 @@
 package org.example.eazyschool.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,6 +17,7 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
         http
                 .csrf().ignoringRequestMatchers("/saveMsg")
+                .ignoringRequestMatchers(PathRequest.toH2Console())
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/dashboard").authenticated()
@@ -25,7 +27,6 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/holidays/**").permitAll()
                 .requestMatchers("/assets/**").permitAll()
                 .requestMatchers("/saveMsg").permitAll()
-                .requestMatchers("/h2-console").permitAll()
                 .requestMatchers("/logout").permitAll()
                 .and()
                 .formLogin()
@@ -37,8 +38,11 @@ public class ProjectSecurityConfig {
                 .logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true).permitAll()
                 .and()
+                .authorizeHttpRequests().requestMatchers(PathRequest.toH2Console()).permitAll()
+                .and()
                 .httpBasic();
 
+        http.headers().frameOptions().disable();
 
 
 
