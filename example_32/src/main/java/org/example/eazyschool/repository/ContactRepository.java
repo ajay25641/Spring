@@ -43,7 +43,7 @@ public class ContactRepository {
     }
 
     public int updateMsgStatus(int contactId, String status, String updatedBy) {
-        String sqlQuery="UPDATE CONTACT_MSG SET STATUS=? , updatedBy=? ,  updatedAt=? , WHERE CONTACTID=?;";
+        String sqlQuery="UPDATE CONTACT_MSG SET STATUS=? , updatedBy=? ,  updatedAt=?  WHERE CONTACTID=?;";
 
        return jdbcTemplate.update(sqlQuery, new PreparedStatementSetter(){
 
