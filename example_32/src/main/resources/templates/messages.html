@@ -45,15 +45,22 @@
             <thead class="table-dark">
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Mobile Num</th>
-                <th scope="col">Email</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Message</th>
-                <th scope="col"></th>
+                <th scope="col">mobileNum</th>
+                <th scope="col">subject</th>
+                <th scope="col">email</th>
+                <th scope="col">message</th>
+
             </tr>
             </thead>
             <tbody>
-            
+              <tr th:each="msgs:${contactMsgs}">
+                  <td th:text="${msgs.name}"> </td>
+                  <td th:text="${msgs.mobileNum}"></td>
+                  <td th:text="${msgs.subject}"></td>
+                  <td th:text="${msgs.email}"></td>
+                  <td th:text="${msgs.message}"></td>
+                  <td><a th:href="@{/closeMsg(contactId=${msgs.contactId})}" class="btn btn-style btn-style-3">Close</a></td>
+              </tr>
             </tbody>
         </table>
     </div>
