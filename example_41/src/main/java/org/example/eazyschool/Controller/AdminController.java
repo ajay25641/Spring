@@ -50,6 +50,9 @@ public class AdminController {
     public ModelAndView deleteClass(@RequestParam(name="classId",required = true) int id){
        Optional<EasyClass>easyClass=easyClassRepository.findById(id);
 
+       System.out.println("inside delete method"+easyClass.get());
+
+
        for(Person person:easyClass.get().getPersons()){
            person.setEasyClass(null);
            personRepository.save(person);
@@ -61,13 +64,15 @@ public class AdminController {
 
     @RequestMapping(value="/displayStudents",method=RequestMethod.GET)
     public ModelAndView displayStudents(Model model,@RequestParam(name="classId",required = true) int id){
+
+        //System.out.println(id);
+
         ModelAndView modelAndView=new ModelAndView("students.html");
         Optional<EasyClass>eazyClass=easyClassRepository.findById(id);
-        /*log.info("id of the class is : "+id);
 
-        eazyClass.ifPresent(easyClass ->{
-            for(Person person:easyClass.getPersons()) log.info("name of the person is : "+person.getName());
-        });*/
+
+        System.out.println("inside display students "+eazyClass.get());
+
         modelAndView.addObject("eazyClass",eazyClass.get());
         modelAndView.addObject("person",new Person());
 

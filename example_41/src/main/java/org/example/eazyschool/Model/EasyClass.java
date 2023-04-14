@@ -20,6 +20,6 @@ public class EasyClass extends BaseEntity{
     @Size(min=3,message="class name must be atleast 3 character long")
     private String name;
 
-    @OneToMany(mappedBy = "easyClass",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST,targetEntity = Person.class)
+    @OneToMany(mappedBy = "easyClass",fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,targetEntity = Person.class)
     private Set<Person> persons;
 }
