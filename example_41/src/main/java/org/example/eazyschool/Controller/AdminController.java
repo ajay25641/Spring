@@ -1,5 +1,6 @@
 package org.example.eazyschool.Controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.example.eazyschool.Model.EasyClass;
 import org.example.eazyschool.Model.Person;
@@ -7,6 +8,7 @@ import org.example.eazyschool.repository.EasyClassRepository;
 import org.example.eazyschool.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +57,8 @@ public class AdminController {
 
        for(Person person:easyClass.get().getPersons()){
            person.setEasyClass(null);
+           person.setConfirmEmail(person.getEmail());
+           person.setConfirmPassword(person.getPassword());
            personRepository.save(person);
        }
 
@@ -63,13 +67,16 @@ public class AdminController {
     }
 
     @RequestMapping(value="/displayStudents",method=RequestMethod.GET)
-    public ModelAndView displayStudents(Model model,@RequestParam(name="classId",required = true) int id){
+    public ModelAndView displayStudents(Model model, @RequestParam(name="classId",required = true) int id, HttpSession session){
 
         ModelAndView modelAndView=new ModelAndView("students.html");
         Optional<EasyClass>eazyClass=easyClassRepository.findById(id);
 
         //this line will give error because toString method trapped in recursive reference
         //System.out.println(eazyClass.get().getPersons());
+
+
+        session.setAttribute("easyClass",eazyClass.get());
 
         modelAndView.addObject("eazyClass",eazyClass.get());
         modelAndView.addObject("studentList",eazyClass.get());
@@ -79,4 +86,60 @@ public class AdminController {
 
         return modelAndView;
     }
+
+    @Transactional
+    @RequestMapping(value="/addStudent",method = RequestMethod.POST)
+    public ModelAndView addNewStudent(@ModelAttribute Person person ,HttpSession session){
+
+        EasyClass easyClass=(EasyClass) session.getAttribute("easyClass");
+
+        Person personEntity=personRepository.getByEmail(person.getEmail());
+
+        personEntity.setEasyClass(easyClass);
+        personEntity.setConfirmPassword(personEntity.getPassword());
+        personEntity.setConfirmEmail(personEntity.getEmail());
+
+
+
+
+         //no need to save personEntity as it will get updated automatically when easyClass is saved because
+        //cascade type in easyClass is persist
+        //personRepository.save(personEntity);
+
+        easyClass.getPersons().add(personEntity);
+        easyClassRepository.save(easyClass);
+
+        return new ModelAndView("redirect:/admin/displayStudents?classId="+easyClass.getClassId());
+
+
+
+    }
+
+
+
+    @RequestMapping(value="/deleteStudent",method=RequestMethod.GET)
+    public ModelAndView deleteStudents(@RequestParam(name="personId") int personId,HttpSession session){
+
+        EasyClass easyClass=(EasyClass) session.getAttribute("easyClass");
+
+        Person person=personRepository.findById(personId).get();
+
+        person.setEasyClass(null);
+        person.setConfirmEmail(person.getEmail());
+        person.setConfirmPassword(person.getPassword());
+
+
+
+        easyClass.getPersons().remove(person);
+
+        EasyClass easyClassSaved = easyClassRepository.save(easyClass);
+
+        session.setAttribute("easyClass",easyClassSaved);
+
+        return new ModelAndView("redirect:/admin/displayStudents?classId="+easyClass.getClassId());
+
+
+
+    }
+
 }

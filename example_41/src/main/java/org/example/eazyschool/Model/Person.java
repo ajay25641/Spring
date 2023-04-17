@@ -5,16 +5,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.example.eazyschool.annotations.FieldsValueMatch;
 import org.example.eazyschool.annotations.PasswordValidator;
 import org.hibernate.validator.constraints.ParameterScriptAssert;
 
-@Data
-@RequiredArgsConstructor
 
+@Getter
+@Setter
 @Entity
 @FieldsValueMatch.List({
         @FieldsValueMatch(

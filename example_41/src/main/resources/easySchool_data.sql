@@ -53,3 +53,10 @@ INSERT INTO `holidays` (`day`,`reason`,`type`,`created_at`, `created_by`)
 
   INSERT INTO roles (role_name,created_at, created_by)
     VALUES ('STUDENT',CURRENT_DATE,'DBA');
+
+
+INSERT INTO PERSON (name,email,mobile_num,password,role_id)
+VALUES('Raj Aryan','ajay256410@gmail.com','9521409219','54321',1);
+
+INSERT INTO PERSON (name,email,mobile_num,password,role_id)
+VALUES('Ajay','ajay25641@gmail.com','8651789057','12345',2);

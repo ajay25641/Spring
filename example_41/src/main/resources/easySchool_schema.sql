@@ -59,10 +59,10 @@ contactId serial primary key,
 	subject text not null,
 	updated_at TIMESTAMP DEFAULT NULL ,
 	updated_by text default null,
-	created_at TIMESTAMP NOT NULL,
-	created_by text not null
+	created_at TIMESTAMP DEFAULT NULL,
+	created_by text DEFAULT null
 
-)
+);
 
 
 
@@ -71,8 +71,8 @@ CREATE TABLE IF NOT EXISTS holidays (
   day text NOT NULL,
   reason text NOT NULL,
   type text NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  created_by text NOT NULL,
+  created_at TIMESTAMP DEFAULT NULL,
+  created_by text DEFAULT NULL,
   updated_at TIMESTAMP DEFAULT NULL,
   updated_by text DEFAULT NULL
 );
@@ -81,8 +81,8 @@ CREATE TABLE IF NOT EXISTS holidays (
 CREATE TABLE IF NOT EXISTS roles (
   role_id serial primary key,
   role_name text NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  created_by text NOT NULL,
+  created_at TIMESTAMP DEFAULT NULL,
+  created_by text DEFAULT NULL,
   updated_at TIMESTAMP DEFAULT NULL,
   updated_by text DEFAULT NULL,
 
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS address(
   city text NOT NULL,
   state text NOT NULL,
   zip_code int NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  created_by text NOT NULL,
+  created_at TIMESTAMP DEFAULT NULL,
+  created_by text DEFAULT NULL,
   updated_at TIMESTAMP DEFAULT NULL,
   updated_by text DEFAULT NULL,
 
@@ -110,8 +110,8 @@ CREATE TABLE IF NOT EXISTS person (
   password text NOT NULL,
   role_id int NOT NULL,
   address_id int default NULL,
-  created_at TIMESTAMP NOT NULL,
-  created_by text NOT NULL,
+  created_at TIMESTAMP DEFAULT NULL,
+  created_by text DEFAULT NULL,
   updated_at TIMESTAMP DEFAULT NULL,
   updated_by text DEFAULT NULL,
   CONSTRAINT fk_roles FOREIGN KEY (role_id) REFERENCES roles(role_id),

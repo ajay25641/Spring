@@ -12,7 +12,7 @@ public class PasswordStrengthValidator implements ConstraintValidator<PasswordVa
     List<String> weakPasswords;
     @Override
     public void initialize(PasswordValidator passwordValidator){
-        weakPasswords= Arrays.asList("12345","qwerty","00000","password");
+        weakPasswords= Arrays.asList("123456789","qwerty","00000","password");
     }
     @Override
     public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {

@@ -29,8 +29,8 @@ public class LoggerAspect {
         return returnObj;
     }
 
-    @AfterThrowing(value="execution(* org.example.eazyschool..*.*(..))",throwing = "ex")
+    /*@AfterThrowing(value="execution(* org.example.eazyschool..*.*(..))",throwing = "ex")
     public void logException(JoinPoint joinPoint,Exception ex){
         log.error(joinPoint.getSignature()+" An exception happend due to :"+ex.getMessage());
-    }
+    }*/
 }

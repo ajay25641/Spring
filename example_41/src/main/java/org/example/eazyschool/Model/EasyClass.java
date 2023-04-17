@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="Class")
 public class EasyClass extends BaseEntity{
@@ -23,4 +26,14 @@ public class EasyClass extends BaseEntity{
 
     @OneToMany(mappedBy = "easyClass",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST,targetEntity = Person.class)
     private List<Person> persons;
+
+
+   /* @Override
+    public String toString() {
+        return "EasyClass{" +
+                "classId=" + classId +
+                ", name='" + name +
+
+                '}';
+    }*/
 }
