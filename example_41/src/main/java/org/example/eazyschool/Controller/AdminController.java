@@ -65,15 +65,14 @@ public class AdminController {
     @RequestMapping(value="/displayStudents",method=RequestMethod.GET)
     public ModelAndView displayStudents(Model model,@RequestParam(name="classId",required = true) int id){
 
-        //System.out.println(id);
-
         ModelAndView modelAndView=new ModelAndView("students.html");
         Optional<EasyClass>eazyClass=easyClassRepository.findById(id);
 
-
-        System.out.println("inside display students "+eazyClass.get());
+        //this line will give error because toString method trapped in recursive reference
+        //System.out.println(eazyClass.get().getPersons());
 
         modelAndView.addObject("eazyClass",eazyClass.get());
+        modelAndView.addObject("studentList",eazyClass.get());
         modelAndView.addObject("person",new Person());
 
 

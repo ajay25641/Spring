@@ -82,10 +82,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="person: ${eazyClass.persons}">
+            <tr th:each="person: ${studentList.persons}">
                 <td th:text="${person.name}"></td>
                 <td th:text="${person.email}"></td>
-                <td th:text="${person.mobileNumber}"></td>
+                <td th:text="${person.mobileNum}"></td>
                 <td><a th:href="@{/admin/deleteStudent(personId=${person.personId})}" class="btn btn-warning">DELETE</a></td>
             </tr>
             </tbody>

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,6 +21,6 @@ public class EasyClass extends BaseEntity{
     @Size(min=3,message="class name must be atleast 3 character long")
     private String name;
 
-    @OneToMany(mappedBy = "easyClass",fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,targetEntity = Person.class)
-    private Set<Person> persons;
+    @OneToMany(mappedBy = "easyClass",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST,targetEntity = Person.class)
+    private List<Person> persons;
 }
