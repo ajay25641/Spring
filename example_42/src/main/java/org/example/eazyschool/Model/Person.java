@@ -11,6 +11,8 @@ import org.example.eazyschool.annotations.PasswordValidator;
 import org.hibernate.validator.constraints.ParameterScriptAssert;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -77,7 +79,23 @@ public class Person extends BaseEntity {
     @JoinTable(name="person_courses",
                joinColumns = @JoinColumn(name="person_id",referencedColumnName = "personId"),
                inverseJoinColumns = @JoinColumn(name="course_id",referencedColumnName = "courseId"))
-    private Set<Courses> courses=new HashSet<>();
+    private List<Courses> courses;
+
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(personId);
+//    }
+//
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj)
+//            return true;
+//        if (obj == null || getClass() != obj.getClass())
+//            return false;
+//        Person other = (Person) obj;
+//        return Objects.equals(personId, other.personId);
+//    }
+
 
 
 

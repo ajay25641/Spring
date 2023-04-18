@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -24,7 +26,21 @@ public class Courses extends BaseEntity{
 
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Set<Person>personSet=new HashSet<>();
+    private List<Person> personSet;
 
 
+/*    @Override
+    public int hashCode() {
+        return Objects.hash(courseId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Courses other = (Courses) obj;
+        return Objects.equals(courseId, other.courseId);
+    }*/
 }

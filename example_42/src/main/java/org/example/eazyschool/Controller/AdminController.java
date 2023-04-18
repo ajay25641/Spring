@@ -9,6 +9,7 @@ import org.example.eazyschool.repository.CoursesRepository;
 import org.example.eazyschool.repository.EasyClassRepository;
 import org.example.eazyschool.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -160,6 +161,76 @@ public class AdminController {
         modelAndView.addObject("course",new Courses());
 
         return modelAndView;
+
+
+    }
+
+    @RequestMapping(value="addNewCourse",method=RequestMethod.POST)
+    public ModelAndView addNewCourse(@ModelAttribute(name="course") Courses course){
+
+       coursesRepository.save(course);
+
+       return new ModelAndView("redirect:/admin/displayCourses");
+
+
+
+    }
+    @RequestMapping(value="/viewStudents",method =RequestMethod.GET)
+    public ModelAndView viewStudents(@RequestParam(name="id") int courseId){
+
+      ModelAndView modelAndView =new ModelAndView("course_students");
+
+      Courses course=coursesRepository.findById(courseId).get();
+
+      List<Person>studentList=course.getPersonSet();
+
+
+      modelAndView.addObject("currentCourse",course);
+      modelAndView.addObject("studentList",studentList);
+      modelAndView.addObject("newStudent",new Person());
+
+      return modelAndView;
+
+
+    }
+    @RequestMapping(value="/addStudentToCourse",method=RequestMethod.POST)
+    public ModelAndView addStudentToCourse(@ModelAttribute(name="newStudent") Person person ,@RequestParam(name="id") int courseId){
+
+        person=personRepository.getByEmail(person.getEmail());
+        Courses course=coursesRepository.findById(courseId).get();
+
+        person.setConfirmPassword(person.getPassword());
+        person.setConfirmEmail(person.getEmail());
+
+        course.getPersonSet().add(person);
+        person.getCourses().add(course);
+
+        course=coursesRepository.save(course);
+
+        //no need to call this as saving course will automatically save person with course
+        //because cascade type in course is persist
+        //person=personRepository.save(person);
+
+        return new ModelAndView("redirect:/admin/viewStudents?id="+course.getCourseId());
+    }
+
+    @RequestMapping(value="/deleteStudentFromCourse",method=RequestMethod.GET)
+    public ModelAndView deleteStudentsFromCourse(@RequestParam(name="personId") int personId,@RequestParam(name="courseId") int courseId){
+
+        Person person=personRepository.findById(personId).get();
+        Courses course=coursesRepository.findById(courseId).get();
+
+        course.getPersonSet().remove(person);
+        person.getCourses().remove(course);
+
+
+        coursesRepository.save(course);
+
+        return new ModelAndView("redirect:/admin/viewStudents?id="+course.getCourseId());
+
+
+
+
 
 
     }

@@ -65,17 +65,21 @@ public class ProjectSecurityConfig {
     }*/
     @Bean
     public InMemoryUserDetailsManager userDetailsService(){
-        UserDetails user= User.withDefaultPasswordEncoder()
+        UserDetails user1= User.withDefaultPasswordEncoder()
                 .username("ajay25641@gmail.com")
                 .password("12345")
                 .roles("USER")
                 .build();
-
+        UserDetails user2= User.withDefaultPasswordEncoder()
+                .username("ak61835kmr@gmail.com")
+                .password("12345")
+                .roles("USER")
+                .build();
         UserDetails admin=User.withDefaultPasswordEncoder()
                 .username("ajay256410@gmail.com")
                 .password("54321")
                 .roles("USER","ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user,admin);
+        return new InMemoryUserDetailsManager(user1,user2,admin);
     }
 }
