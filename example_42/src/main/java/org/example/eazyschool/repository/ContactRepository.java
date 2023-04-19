@@ -3,10 +3,14 @@ package org.example.eazyschool.repository;
 import org.example.eazyschool.Model.Contact;
 import org.example.eazyschool.RowMapper.ContactRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,5 +23,4 @@ public interface ContactRepository extends CrudRepository<Contact,Integer> {
 
   List<Contact> findByStatus(String status);
 
-
-}
+ }
