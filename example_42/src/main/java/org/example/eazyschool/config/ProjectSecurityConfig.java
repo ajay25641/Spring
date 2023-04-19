@@ -25,6 +25,7 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/displayProfile").permitAll()
                 .requestMatchers("/updateProfile").authenticated()
+                .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/closeMsg/**").hasRole("ADMIN")
                 .requestMatchers("/home").permitAll()
                 .requestMatchers("/contact").permitAll()
@@ -68,12 +69,12 @@ public class ProjectSecurityConfig {
         UserDetails user1= User.withDefaultPasswordEncoder()
                 .username("ajay25641@gmail.com")
                 .password("12345")
-                .roles("USER")
+                .roles("STUDENT")
                 .build();
         UserDetails user2= User.withDefaultPasswordEncoder()
                 .username("ak61835kmr@gmail.com")
                 .password("12345")
-                .roles("USER")
+                .roles("STUDENT")
                 .build();
         UserDetails admin=User.withDefaultPasswordEncoder()
                 .username("ajay256410@gmail.com")
