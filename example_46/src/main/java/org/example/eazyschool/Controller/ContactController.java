@@ -4,81 +4,79 @@ package org.example.eazyschool.Controller;
 import lombok.extern.slf4j.Slf4j;
 import org.example.eazyschool.Model.Contact;
 
-import org.example.eazyschool.Services.ContactService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.validation.Valid;
+import org.example.eazyschool.Model.Response;
+import org.example.eazyschool.proxy.ContactProxy;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 
 @Slf4j
-@Controller
+@RestController
 public class ContactController {
-    //private Logger log= LoggerFactory.getLogger(ContactController.class);
-
-    private ContactService contactService;
 
     @Autowired
-    ContactController(ContactService contactService){
-        this.contactService=contactService;
+    private ContactProxy contactProxy;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+
+    @Autowired
+    private WebClient webClient;
+
+    @GetMapping(value="/getMessages")
+    public List<Contact>getMessages(@RequestParam(name="status") String status){
+        return contactProxy.getMessagesByStatus(status);
     }
 
-    @RequestMapping(value={"/contact"})
-    public String displayContactPage(Model model){
-        model.addAttribute("contact",new Contact());
-        return "contact.html";
+    @PostMapping("/saveMsg")
+    public ResponseEntity<Response> saveMsg(@RequestBody Contact contact){
+
+        log.info(String.valueOf(contact));
+
+        HttpHeaders httpHeaders=new HttpHeaders();
+
+        httpHeaders.add("invocationFrom","restTemplate");
+
+        String uri="http://localhost:8085/api/contact/saveMsg";
+
+        HttpEntity<Contact>httpEntity=new HttpEntity<>(contact,httpHeaders);
+
+        ResponseEntity<Response>responseEntity=restTemplate.exchange(uri, HttpMethod.POST,httpEntity, Response.class);
+
+        return responseEntity;
+
     }
 
-    /*@RequestMapping(value="/saveMsg",method=POST)
-    //@PostMapping(value="/saveMsg")
-        public ModelAndView saveContactDetails(@RequestParam String name, @RequestParam String mobileNum, @RequestParam String email , @RequestParam String subject, @RequestParam String message){
-            log.info("Name is "+name);
-            logr.info("mobile number is "+mobileNum);
-            log.info("email is "+email);
-            log.info("subject is "+subject);
-            log.info("message is "+message);
-            return new ModelAndView("redirect:/contact");
-        }*/
+    @PostMapping("/saveMessage")
+    public Mono<Response> saveMessage(@RequestBody Contact contact){
 
-      @RequestMapping(value="/saveMsg",method =POST)
-       public String saveContactDetails(@Valid @ModelAttribute("contact") Contact contact , Errors errors ){
-  
-          if(errors.hasErrors()){
-            log.error("contact form validation failed due to : ", errors.toString());
-            return "contact.html"; // send back contact form along with error
-          }
-          contactService.saveContactDetails(contact);
-          return "redirect:contact"; // reload contact form from start
+        log.info(String.valueOf(contact));
 
-      }
-      @RequestMapping(value="/displayMessages",method = GET)
-      public ModelAndView displayMessagesWithOpenStatus(){
-          List<Contact> contactMsgs=contactService.getContactMessagesWithOpenStatus();
-          ModelAndView modelAndView=new ModelAndView("messages.html");
-          modelAndView.addObject("contactMsgs",contactMsgs);
-          return modelAndView;
+        String uri="http://localhost:8085/api/contact/saveMsg";
 
-      }
+        return webClient.post().uri(uri)
+                .header("invocationFrom","webClient")
+                .body(Mono.just(contact),Contact.class)
+                .retrieve()
+                .bodyToMono(Response.class);
 
-      @RequestMapping(value="/closeMsg",method=GET)
-      public String closeMessages(@RequestParam(required = true) int contactId, Authentication authentication){
-          contactService.updateMsgStatus(contactId,authentication.getName());
-          return "redirect:/displayMessages" ;
-      }
     }
+
+}
 
 

@@ -2,12 +2,12 @@ package org.example.eazyschool;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
 
 @SpringBootApplication
-@EnableJpaRepositories("org.example.eazyschool.repository")
-@EntityScan("org.example.eazyschool.Model;")
+@EnableFeignClients(basePackages = {"org.example.eazyschool.proxy"})
 public class
 EazySchoolApplication {
 
